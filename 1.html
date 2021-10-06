@@ -40,8 +40,8 @@
       const view = new SceneView({
         container: "viewDiv",
         map: webscene,
-        center: [-118.80500,34.02700], //Longitude, latitude
-        zoom: 13,
+        center: [111.0117106303711, 21.530025933119486],
+        zoom: 12,
       });
 
       const legend = new Legend ({
@@ -57,18 +57,17 @@
        const polygon = {
           type: "polygon",
           rings: [
-              [-118.818984489994, 34.0137559967283], //Longitude, latitude
-              [-118.806796597377, 34.0215816298725], //Longitude, latitude
-              [-118.791432890735, 34.0163883241613], //Longitude, latitude
-              [-118.79596686535, 34.008564864635],   //Longitude, latitude
-              [-118.808558110679, 34.0035027131376]  //Longitude, latitude
+              [111.01411388964844, 21.470291933372145], 
+              [111.08449505419922, 21.470291933372145], 
+              [111.08449505419922, 21.462623762272692], 
+              [111.01411388964844, 21.435142836475286]  
           ]
        };
 
        //多边形填充颜色
        const simpleFillSymbol = {
           type: "simple-fill",
-          color: [227, 139, 79, 0.8],  // Orange, opacity 80%
+          color: [227, 139, 79, 0.8],  
           outline: {
               color: [255, 255, 255],
               width: 1
