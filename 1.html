@@ -2,7 +2,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
-  <title>Display a web scene</title>
+  <title>地球</title>
   <style>
     html, body, #viewDiv {
       padding: 0;
@@ -40,8 +40,8 @@
       const view = new SceneView({
         container: "viewDiv",
         map: webscene,
-        center: [111.0117106303711, 21.530025933119486],
-        zoom: 12,
+        center: [0, 0],
+        zoom: 5,
       });
 
       const legend = new Legend ({
@@ -54,42 +54,77 @@
       const graphicsLayer = new GraphicsLayer();
       webscene.add(graphicsLayer);
 
-       const polygon = {
-          type: "polygon",
-          rings: [
-              [111.01411388964844, 21.470291933372145], 
-              [111.08449505419922, 21.470291933372145], 
-              [111.08449505419922, 21.462623762272692], 
-              [111.01411388964844, 21.435142836475286]  
-          ]
-       };
-
        //多边形填充颜色
-       const simpleFillSymbol = {
+       const colorFree = {
           type: "simple-fill",
-          color: [227, 139, 79, 0.8],  
+          color: [255, 0, 0, 0.5],  
           outline: {
-              color: [255, 255, 255],
+              color: [0, 0, 0],
               width: 1
           }
        };
 
-       //多边形的弹窗
-       const polygonGraphic = new Graphic({
-          geometry: polygon,
-          symbol: simpleFillSymbol,
+       const colorBuy = {
+          type: "simple-fill",
+          color: [255, 229, 0, 0.5],  
+          outline: {
+              color: [0, 0, 0],
+              width: 1
+          }
+       };
 
-          attributes: {
-            Name: "Graphic",
-            Description: "I am a polygon"
-         },
-          popupTemplate: {
-            title: "{Name}",
-            content: "{Description}"
-         }
+       //已经购买的格子
+       var buyed = [
+        [-15,10], [2,0], [-8,15], [-9,-13], [12,4]
+       ]
 
-       });
-       graphicsLayer.add(polygonGraphic);
+       function checkBuyed(lat, lng){
+          var cb = false
+          for(var i=0; i<buyed.length; i++){
+            if(lat == buyed[i][0] && lng == buyed[i][1]){
+              cb = true
+            }
+          }
+          return cb;
+       }
+
+       for(var i=-20; i<20; i++){
+
+          for(var j=-20; j<20; j++){
+
+              //随便搞几个填充黄色
+              var colorFill = colorFree;
+              var showText = '可以购买'
+              if(checkBuyed(i,j) == true){
+                colorFill = colorBuy;
+                showText = '被卖掉了'
+              }
+
+              graphicsLayer.add(new Graphic({
+                geometry: {
+                    type: "polygon",
+                    rings: [
+                        [i, j], 
+                        [i+1, j], 
+                        [i+1, j+1], 
+                        [i, j+1]  
+                    ]
+                 },
+                symbol: colorFill,
+
+                attributes: {
+                  Name: showText + ":",
+                  Description: "经纬度: "+i+", "+j
+               },
+                popupTemplate: {
+                  title: "{Name}",
+                  content: "{Description}"
+               }
+
+             }));
+          }
+
+       }
 
     });
   </script>
